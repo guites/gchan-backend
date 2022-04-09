@@ -62,6 +62,8 @@ ALTER TABLE ONLY replies ALTER COLUMN id SET DEFAULT nextval('replies_id_seq'::r
 -- sets foreign key to message_id field
 ALTER TABLE ONLY replies
     ADD CONSTRAINT message_reply FOREIGN KEY (message_id) REFERENCES messages(id);
+-- combination of message_id, content and imageURL must be unique
+ALTER TABLE ONLY replies ADD CONSTRAINT replies_message_id_content_imageurl_key UNIQUE (message_id, content, imageurl);
 
 -- PLACEHOLDER TABLE
 CREATE TABLE placeholders (
@@ -244,6 +246,19 @@ INSERT INTO replies (username, content, imageURL, user_id, message_id) VALUES
 ('cdavydochkin2o', 'You are an exceptional student!', 'https://images.dog.ceo/breeds/dhole/n02115913_520.jpg', '0', '29'), 
 ('pcumbes2r', 'You have brilliant thoughts!', 'https://images.dog.ceo/breeds/mastiff-bull/n02108422_5234.jpg', '0', '30'), 
 ('brickeardn', 'This is beautiful!', '', '0', '30');
+
+-- insert dummy placeholders data
+INSERT INTO placeholders (file) VALUES
+('butterfree1.gif'),('culumon1.gif'),('ditto1.gif'),('mewtwo1.gif'),('patamon1.gif'),
+('pichu1.gif'),('pikachu1.gif'),('pikachu2.gif'),('pikachu3.gif'),('pikachu4.gif'),
+('pikachu5.gif'),('pikachu6.gif'),('pikachu7.gif'),('pikachu8.gif'),('pikachu9.gif'),
+('renamon1.gif'),('sad1.gif'),('sad2.gif'),('squirtle1.gif'),('tepig1.gif'),('togepi1.gif');
+
+-- insert dummy marquee data
+INSERT INTO marquees (content, created, has_url, href) VALUES
+('What an accomplishment!', 'Thu Apr 07 2022 20:06:10', 1, 'http://pudim.com.br'),
+('Go to prod!', 'Thu Apr 07 2022 20:06:10', 1, 'https://gchan.com.br/'),
+('Look ma, no link!', 'Thu Apr 07 2022 20:06:10', 0, '');
 
 /* output from SELECT * FROM pg_catalog.pg_tables WHERE tableowner = 'gchan';
  schemaname |  tablename   |   tableowner   | tablespace | hasindexes | hasrules | hastriggers | rowsecurity
